@@ -1,0 +1,12 @@
+.well-known
+.github
+error_log
+*.lock
+.DS_Store
+/vendor/*
+
+
+# Applications
+*.app
+*.exe
+*.war

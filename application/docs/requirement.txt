@@ -1,0 +1,12 @@
+Scenario:
+    PHP Developer
+    Our HR department would like to have a system where they can post messages to get votes from employees.
+Objective:
+    Create an application where the admin can post a message and users can vote for it.
+Instructions:
+    A simple application where an admin can post,edit a message. Page to view history of messages and respective vote counts. Non-Admin can vote on a message.
+
+Programming Languages:
+    PHP and Mysql
+Bonus:
+    Create the above use case also as a wordpress plugin.
