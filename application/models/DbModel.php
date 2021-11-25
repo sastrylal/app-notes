@@ -57,7 +57,11 @@ class DbModel extends CI_Model {
         $this->db->where("is_active", "1");
         $query = $this->db->get("tbl_notes");
         if ($query->num_rows() > 0) {
-            return $query->result_array();
+            $rows = $query->result_array();
+            foreach($rows as &$row){
+                $row['tags'] = $this->getNoteTags($row['note_id']);
+            }
+            return $rows;
         }
         return [];
     }
@@ -67,7 +71,9 @@ class DbModel extends CI_Model {
         $this->db->where("note_id", $note_id);
         $query = $this->db->get("tbl_notes");
         if ($query->num_rows() > 0) {
-            return $query->row_array();
+            $row = $query->row_array();
+            $row['tags'] = $this->getNoteTags($row['note_id']);
+            return $row;
         }
         return [];
     }
@@ -86,6 +92,34 @@ class DbModel extends CI_Model {
     function deleteNoteById($note_id) {
         $this->db->where("note_id", $note_id);
         return $this->db->delete("tbl_notes");
+    }
+
+    function getNoteTags($note_id) {
+        $this->db->select("m.*, t.tag_name");
+        $this->db->join("tbl_tags t", "t.tag_id=m.tag_id");
+        $this->db->where("m.note_id", $note_id);
+        $query = $this->db->get("tbl_note_tags m");
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return [];
+    }
+
+    function addNoteTag($pdata) {
+        $this->db->select("m.*");
+        $this->db->where("m.note_id", $pdata['note_id']);
+        $this->db->where("m.tag_id", $pdata['tag_id']);
+        $query = $this->db->get("tbl_note_tags m");
+        if ($query->num_rows() > 0) {
+            $query->result_array();
+        } else {
+            $this->db->insert("tbl_note_tags", $pdata);
+        }
+    }
+
+    function deleteNoteTagsByNoteId($note_id) {
+        $this->db->where("note_id", $note_id);
+        return $this->db->delete("tbl_note_tags");
     }
     
     function getCountriesList() {

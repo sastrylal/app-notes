@@ -38,8 +38,8 @@
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body">
                         <div class="row">
-                            <input type="text" id="tag_name" name="tag_name" />
-                            <input type="button" id="add_item" name="add_item" value="Add" />
+                            <input type="text" class="" id="tag_name" name="tag_name" />
+                            <input type="button" class="btn btn-primary" id="add_item" name="add_item" value="Add" />
                         </div>
                         <div class="container" id="list_items" style="margin-top: 20px;"></div>
                     </div>
