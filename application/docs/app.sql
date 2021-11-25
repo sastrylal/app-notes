@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 22, 2021 at 01:18 AM
+-- Generation Time: Nov 25, 2021 at 03:42 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.1.31
 
@@ -11,81 +11,114 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Database: `app_poll`
+-- Database: `app_notes`
 --
-CREATE DATABASE IF NOT EXISTS `app_poll` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `app_poll`;
+CREATE DATABASE IF NOT EXISTS `app_notes` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `app_notes`;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_polls`
+-- Table structure for table `tbl_notes`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_polls` (
-  `poll_id` int(11) NOT NULL AUTO_INCREMENT,
-  `poll_title` varchar(1000) DEFAULT NULL,
+CREATE TABLE `tbl_notes` (
+  `note_id` int(11) NOT NULL,
+  `note_title` varchar(250) DEFAULT NULL,
+  `note_description` text,
   `is_active` tinyint(4) DEFAULT '1',
-  `created_on` datetime DEFAULT NULL,
-  PRIMARY KEY (`poll_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  `created_on` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `tbl_polls`
+-- Dumping data for table `tbl_notes`
 --
 
-INSERT INTO `tbl_polls` (`poll_id`, `poll_title`, `is_active`, `created_on`) VALUES
-(2, 'TEST002', 1, '2021-11-22 04:20:26'),
-(3, 'TEST003a', 1, '2021-11-22 04:43:42');
+INSERT INTO `tbl_notes` (`note_id`, `note_title`, `note_description`, `is_active`, `created_on`) VALUES
+(1, 'TEST001', 'Google and Facebook buttons are available featuring each company\'s respective brand color. They are used on the user login and registration pages.', 1, '2021-11-25 19:54:46'),
+(2, 'TEST002', 'Google and Facebook buttons are available featuring each company\'s respective brand color. They are used on the user login and registration pages.', 1, '2021-11-25 19:54:58');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_poll_votes`
+-- Table structure for table `tbl_note_tags`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_poll_votes` (
-  `vote_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ip` varchar(50) DEFAULT NULL,
-  `poll_id` int(11) DEFAULT NULL,
-  `vote` int(11) DEFAULT '0',
-  `created_on` datetime DEFAULT NULL,
-  PRIMARY KEY (`vote_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+CREATE TABLE `tbl_note_tags` (
+  `note_id` int(11) NOT NULL,
+  `tag_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `tbl_poll_votes`
+-- Dumping data for table `tbl_note_tags`
 --
 
-INSERT INTO `tbl_poll_votes` (`vote_id`, `ip`, `poll_id`, `vote`, `created_on`) VALUES
-(1, '127.0.0.1', 2, 1, '2021-11-22 05:33:32'),
-(2, '127.0.0.1', 2, 1, '2021-11-22 05:33:35'),
-(3, '127.0.0.1', 2, 0, '2021-11-22 05:47:39'),
-(4, '127.0.0.1', 2, 0, '2021-11-22 05:47:40');
+INSERT INTO `tbl_note_tags` (`note_id`, `tag_id`) VALUES
+(1, 1),
+(1, 3),
+(2, 1),
+(2, 3),
+(2, 4),
+(4, 1),
+(4, 3);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_users`
+-- Table structure for table `tbl_tags`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `role` enum('USER','SUPERADMIN') NOT NULL DEFAULT 'USER',
-  `email` varchar(200) NOT NULL,
-  `pwd` varchar(200) NOT NULL,
-  `first_name` varchar(100) NOT NULL,
-  `last_name` varchar(100) NOT NULL,
-  `is_active` tinyint(4) NOT NULL DEFAULT '1',
-  `created_on` datetime NOT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+CREATE TABLE `tbl_tags` (
+  `tag_id` int(11) NOT NULL,
+  `tag_name` varchar(100) NOT NULL,
+  `is_active` tinyint(4) DEFAULT '1',
+  `created_on` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `tbl_users`
+-- Dumping data for table `tbl_tags`
 --
 
-INSERT INTO `tbl_users` (`user_id`, `role`, `email`, `pwd`, `first_name`, `last_name`, `is_active`, `created_on`) VALUES
-(1, 'SUPERADMIN', 'admin@poll.com', 'Admin@123', 'Admin', '', 1, '2021-11-22 02:46:27'),
-(2, 'USER', 'sastrylal@gmail.com', 'Admin@123', 'L B Sastry', 'CH', 1, '2021-11-22 02:47:07');
+INSERT INTO `tbl_tags` (`tag_id`, `tag_name`, `is_active`, `created_on`) VALUES
+(1, 'TEST001', 1, '2021-11-25 16:00:10'),
+(3, 'TEST002', 1, '2021-11-25 16:04:40'),
+(4, 'TEST003', 1, '2021-11-25 16:11:11');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `tbl_notes`
+--
+ALTER TABLE `tbl_notes`
+  ADD PRIMARY KEY (`note_id`);
+
+--
+-- Indexes for table `tbl_note_tags`
+--
+ALTER TABLE `tbl_note_tags`
+  ADD PRIMARY KEY (`note_id`,`tag_id`);
+
+--
+-- Indexes for table `tbl_tags`
+--
+ALTER TABLE `tbl_tags`
+  ADD PRIMARY KEY (`tag_id`),
+  ADD UNIQUE KEY `tag_name` (`tag_name`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `tbl_notes`
+--
+ALTER TABLE `tbl_notes`
+  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbl_tags`
+--
+ALTER TABLE `tbl_tags`
+  MODIFY `tag_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
