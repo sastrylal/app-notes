@@ -1,4 +1,4 @@
-# app-poll
+# app-notes
 
 Run composer 
 DB backup : application/docs/app.sql
